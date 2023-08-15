@@ -1,0 +1,23 @@
+#INCLUDE "PROTHEUS.CH"
+#INCLUDE "TBICONN.CH"
+
+USER FUNCTION SCHEDULE()
+    PRIVATE lSched := (ISBLIND() .OR. (SELECT("SM0")==0))
+   
+	IF lSched
+		RPCSETTYPE(3)
+		PREPARE ENVIRONMENT EMPRESA("99") FILIAL ("01") MODULO ("FAT")
+		InitPublic()
+		SetsDefault()
+	
+        IF !TcIsConnected()
+            TCLINK()
+        ENDIF
+    ENDIF
+
+    CONOUT("ESTOU NO PROGRAMA DO SCHEDULE: " + TIME())
+	
+	IF lSched
+		RESET ENVIRONMENT
+	ENDIF
+RETURN
