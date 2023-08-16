@@ -1,0 +1,11 @@
+Passo-a-Passo para compilacao de arquivos do GERAR CONTAS A PAGAR PARA VALORES:
+==============================================================
+
+1. Compilar fontes: 
+    AveNorte\Ponto de Entrada\M460FIM.prw     - Ponto de entrada para gravar dados após a gravação da nota fiscal 
+    AveNorte\Ponto de Entrada\M460MARK.prw    - Ponto de entrada para Validação de pedidos marcados    
+
+2. Executar o compatibilizador UPDSX1:
+    AveNorte\Compatibilizador\.prw       - Compatibilizador da SX1
+
+.Fim
