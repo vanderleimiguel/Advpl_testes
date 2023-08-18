@@ -6,12 +6,11 @@
 
 /*/{Protheus.doc} CsvToSN
 Função para gravar dados de CSV para SN1 e SN3
-@author Vanderlei
-@since 27/06/2023
+@author Wagner Neves
+@since 18/08/2023
 @version 1.0
 @type function
 /*/
-
 User Function CsvToIND()
 	Local aArea     := GetArea()
 
