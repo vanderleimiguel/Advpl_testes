@@ -55,6 +55,7 @@ Static Function ImpCsvSED()
     Local cPai        := ""
     Local cMovBco     := ""
     Local cMsBloq     := ""
+    Local aDescr      := {}
 
     //Definindo o arquivo a ser lido
     oArquivo := FWFileReader():New(cArqOri)
@@ -95,6 +96,8 @@ Static Function ImpCsvSED()
                     ElseIf aLinha[3] == "Analitico"
                         aLinha[3]   := "2"
                     EndIf
+
+                    aLinha[2]   := Limpar(aLinha[2])
 
                     //Extrai dados do array para as variaveis                   
                     cCodigo     := aLinha[1]
@@ -140,7 +143,7 @@ Return
  *---------------------------------------------------------------------*/
  
 Static Function GravSED(_aColSED)
-
+    Local aArea       := GetArea()
     DbSelectArea("SED")
     RecLock("SED", .T.)	
 
@@ -188,5 +191,37 @@ Static Function GravSED(_aColSED)
     SED->ED_ALUGUEL     := "1"  
 
     SED->(MsUnLock()) // Confirma e finaliza a operação
-
+    RestArea(aArea)
 Return
+
+Static Function Limpar(cLimpa)
+		
+			cLimpa := StrTran(cLimpa, "!", "")
+			cLimpa := StrTran(cLimpa, "#", "")
+			cLimpa := StrTran(cLimpa, "@", "")
+			cLimpa := StrTran(cLimpa, "$", "")
+			cLimpa := StrTran(cLimpa, "%", "")
+			cLimpa := StrTran(cLimpa, "&", "")
+			cLimpa := StrTran(cLimpa, "*", "")
+			cLimpa := StrTran(cLimpa, "(", "")
+			cLimpa := StrTran(cLimpa, ")", "")
+			cLimpa := StrTran(cLimpa, "_", "")
+			cLimpa := StrTran(cLimpa, "=", "")
+			cLimpa := StrTran(cLimpa, "+", "")
+			cLimpa := StrTran(cLimpa, "{", "")
+			cLimpa := StrTran(cLimpa, "}", "")
+			cLimpa := StrTran(cLimpa, "[", "")
+			cLimpa := StrTran(cLimpa, "]", "")
+			cLimpa := StrTran(cLimpa, "/", "")
+			cLimpa := StrTran(cLimpa, "?", "")
+			cLimpa := StrTran(cLimpa, ".", "")
+			cLimpa := StrTran(cLimpa, "\", "")
+			cLimpa := StrTran(cLimpa, "|", "")
+			cLimpa := StrTran(cLimpa, ":", "")
+			cLimpa := StrTran(cLimpa, ";", "")
+			cLimpa := StrTran(cLimpa, '"', '')
+			cLimpa := StrTran(cLimpa, '°', '')
+			cLimpa := StrTran(cLimpa, 'ª', '')
+			cLimpa :=  FwNoAccent(cLimpa)
+
+Return cLimpa
