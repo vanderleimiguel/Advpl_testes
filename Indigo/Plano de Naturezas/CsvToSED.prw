@@ -55,7 +55,6 @@ Static Function ImpCsvSED()
     Local cPai        := ""
     Local cMovBco     := ""
     Local cMsBloq     := ""
-    Local aDescr      := {}
 
     //Definindo o arquivo a ser lido
     oArquivo := FWFileReader():New(cArqOri)
