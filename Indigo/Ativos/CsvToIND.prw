@@ -68,6 +68,9 @@ Static Function ImpCsvSN()
     Local nSequenc    := 0
     Local cNome       := ""
     Local cParcNom    := ""
+    Local cCContab    := ""
+    Local cCCDepr     := ""
+    Local cCDeprec    := ""
     Private cSituac   := ""
 
     //Definindo o arquivo a ser lido
@@ -105,7 +108,7 @@ Static Function ImpCsvSN()
                 aLinha  := StrTokArr2(cLinAtu, ";", .T. )
 
                 //Define linhas a processar
-                If nLinhaAtu >= 5 .AND. nLinhaAtu <= 271
+                If nLinhaAtu >= 5 .AND. nLinhaAtu <= 271 .AND. aLinha[1] == "DESPESA"
 
                     //Insere zeros a esquerda
                     aLinha[13] := PADL(aLinha[13],6,"0")
@@ -114,17 +117,35 @@ Static Function ImpCsvSN()
 
                     //Ajuste Grupo
                     If aLinha[1] == "VEICULOS"
-                        aLinha[1] := "0003"
+                        aLinha[1]   := "0003"
+                        cCContab    := "1233010001"
+                        cCCDepr     := "1239020001"
+                        cCDeprec    := "511010005"
                     ElseIf aLinha[1] == "MOVEIS E UTENS."
-                        aLinha[1] := "0004"
+                        aLinha[1]   := "0004"
+                        cCContab    := "1234010001"
+                        cCCDepr     := "1239030001"
+                        cCDeprec    := "511010001"
                     ElseIf aLinha[1] == "EQUIP. DE INFOR."
-                        aLinha[1] := "0006"
+                        aLinha[1]   := "0006"
+                        cCContab    := "1236010001"
+                        cCCDepr     := "1239050001"
+                        cCDeprec    := "511010003"
                     ElseIf aLinha[1] == "MAQUINAS E EQUIP."
-                        aLinha[1] := "0001"
+                        aLinha[1]   := "0001"
+                        cCContab    := "1235010001"
+                        cCCDepr     := "1239040001"
+                        cCDeprec    := "511010002"
                     ElseIf aLinha[1] == "DESPESA"
-                        aLinha[1] := "0007"
+                        aLinha[1]   := "0007"
+                        cCContab    := ""
+                        cCCDepr     := ""
+                        cCDeprec    := ""
                     ElseIf aLinha[1] == "BENFEITORIA"
-                        aLinha[1] := "0008"                      
+                        aLinha[1]   := "0008"   
+                        cCContab    := "1237010001"
+                        cCCDepr     := "1239060001" 
+                        cCDeprec    := ""                  
                     EndIf
 
                     //Ajuste de Valores numericos
@@ -168,9 +189,9 @@ Static Function ImpCsvSN()
                     cN1FISCA    := aLinha[5]
                     cAQUIS      := CTOD(aLinha[2])
                     cN1GRUPO    := aLinha[1] //C4
-                    // cN3CCONT    := aLinha[12]
-                    // cN3CDEPR    := aLinha[14]
-                    // cN3CCDEP    := aLinha[16]
+                    cN3CCONT    := cCContab
+                    cN3CDEPR    := cCDeprec 
+                    cN3CCDEP    := cCCDepr
                     nN1QUANT    := aLinha[12] //N
                     nN3TXDEP    := aLinha[7] //N
                     nN3VORIG    := aLinha[6] //N
@@ -207,7 +228,7 @@ Static Function ImpCsvSN()
                     GravSN3(aColSN3) 
 
                     //Verifica tamanho do nome
-                    cNome  := aLinha[11]     
+                    cNome  := FwNoAccent(aLinha[11])     
                     nNome  := Len(cNome)
                     If nNome > 40
                         While nNome <> 0
@@ -290,9 +311,9 @@ Static Function GravSN3(_aColSN3)
 	SN3->N3_ITEM        := _aColSN3[2]
 	SN3->N3_TIPO        := _aColSN3[3]  
     SN3->N3_HISTOR      := _aColSN3[4]    
-    // SN3->N3_CCONTAB     := _aColSN3[5] 
-	// SN3->N3_CDEPREC     := _aColSN3[6]
-	// SN3->N3_CCDEPR      := _aColSN3[7]  
+    SN3->N3_CCONTAB     := _aColSN3[5] 
+	SN3->N3_CDEPREC     := _aColSN3[6]
+	SN3->N3_CCDEPR      := _aColSN3[7]  
     SN3->N3_TXDEPR1     := _aColSN3[8]   
 	SN3->N3_VORIG1      := _aColSN3[9]  
     SN3->N3_VRDACM1     := _aColSN3[10] 
