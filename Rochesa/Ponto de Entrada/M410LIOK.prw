@@ -3,7 +3,7 @@
 /*/{Protheus.doc} M410LIOK
 Ponto de entrada Validação de linha de pedido - ocorre durante a troca da linha da getdados
 @author Wagner Neves
-@since 24/08/2023
+@since 28/08/2023
 @version 1.0
 @type function
 /*/
@@ -50,7 +50,7 @@ User Function M410LIOK()
 		If cBenef 	== "S"
 
 			//Verifica se dados estao preenchidos
-			If Empty(cCodAju) .OR. Empty(cCodRef) .OR. Empty(cCodFisc) .OR. Empty(cSitTrib)
+			If Empty(cCodAju) .OR. Empty(cCodRef)
 				MSGSTOP( "TES: " + cTes + " ,do item: " + cItem + " ,nao esta preenchido no Relacionamento TES x Cod.Val.Decl", "Bloqueio" )
 				lRet := .F.
 			EndIf
