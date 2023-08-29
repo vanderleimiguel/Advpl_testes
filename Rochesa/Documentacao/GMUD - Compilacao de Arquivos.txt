@@ -3,6 +3,7 @@ Passo-a-Passo para compilacao de arquivos:
 
 1. Compilar fontes: 
     Rochesa\Ponto de Entrada\M410LIOK.prw     - Ponto de entrada Validação de linha de pedido - ocorre durante a troca da linha da getdados
+    Rochesa\Ponto de Entrada\MA080VLD.prw     - Ponto de entrada Validar os dados do TES antes que sejam gravados.
    
 2. Executar o compatibilizador UPDROCH:
     Rochesa\Compatibilizador\UPDROCH.prw      - Compatibilizador campos da F3K, SF4, SXA E SXB
