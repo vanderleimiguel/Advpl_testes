@@ -455,9 +455,9 @@ aAdd( aSX3, { ;
 	{ 'C'																	, .T. }, ; //X3_TIPO
 	{ 1																		, .T. }, ; //X3_TAMANHO
 	{ 0																		, .T. }, ; //X3_DECIMAL
-	{ 'Possui Benef'														, .T. }, ; //X3_TITULO
-	{ 'Possui Benef'														, .T. }, ; //X3_TITSPA
-	{ 'Possui Benef'														, .T. }, ; //X3_TITENG
+	{ 'Relacio. TES'														, .T. }, ; //X3_TITULO
+	{ 'Relacio. TES'														, .T. }, ; //X3_TITSPA
+	{ 'Relacio. TES'														, .T. }, ; //X3_TITENG
 	{ 'S-sim/N-nao'															, .T. }, ; //X3_DESCRIC
 	{ 'S-sim/N-nao'															, .T. }, ; //X3_DESCSPA
 	{ 'S-sim/N-nao'															, .T. }, ; //X3_DESCENG
@@ -1262,9 +1262,10 @@ PutSX1Help( "PF4_IPIOBS ", aHlpPor, {}, {}, .T.,,.T. )
 AutoGrLog( "Atualizado o Help do campo " + "F4_IPIOBS" )
 
 aHlpPor := {}
-aAdd( aHlpPor, 'Possui ou não cBenef, sendo:' )
-aAdd( aHlpPor, 'S = Possui cBenef' )
-aAdd( aHlpPor, 'N = Não possui cBenef' )
+aAdd( aHlpPor, 'Considera Relacionamento TES x' )
+aAdd( aHlpPor, 'Val.Declaratórios?, sendo:' )
+aAdd( aHlpPor, 'S = Considera' )
+aAdd( aHlpPor, 'N = Não considera' )
 
 PutSX1Help( "PF4_XCBENEF", aHlpPor, {}, {}, .T.,,.T. )
 AutoGrLog( "Atualizado o Help do campo " + "F4_XCBENEF" )
