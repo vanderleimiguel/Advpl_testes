@@ -21,7 +21,7 @@
 Função de update de dicionários para compatibilização
 
 @author TOTVS Protheus
-@since  28/08/2023
+@since  29/08/2023
 @obs    Gerado por EXPORDIC - V.7.3.1.1 EFS / Upd. V.5.2.1 EFS
 @version 1.0
 /*/
@@ -144,7 +144,7 @@ Return NIL
 Função de processamento da gravação dos arquivos
 
 @author TOTVS Protheus
-@since  28/08/2023
+@since  29/08/2023
 @obs    Gerado por EXPORDIC - V.7.3.1.1 EFS / Upd. V.5.2.1 EFS
 @version 1.0
 /*/
@@ -349,7 +349,7 @@ Return lRet
 Função de processamento da gravação do SX3 - Campos
 
 @author TOTVS Protheus
-@since  28/08/2023
+@since  29/08/2023
 @obs    Gerado por EXPORDIC - V.7.3.1.1 EFS / Upd. V.5.2.1 EFS
 @version 1.0
 /*/
@@ -451,6 +451,53 @@ aAdd( aSX3, { ;
 aAdd( aSX3, { ;
 	{ 'SF4'																	, .T. }, ; //X3_ARQUIVO
 	{ 'EI'																	, .T. }, ; //X3_ORDEM
+	{ 'F4_XCBENEF'															, .T. }, ; //X3_CAMPO
+	{ 'C'																	, .T. }, ; //X3_TIPO
+	{ 1																		, .T. }, ; //X3_TAMANHO
+	{ 0																		, .T. }, ; //X3_DECIMAL
+	{ 'Possui Benef'														, .T. }, ; //X3_TITULO
+	{ 'Possui Benef'														, .T. }, ; //X3_TITSPA
+	{ 'Possui Benef'														, .T. }, ; //X3_TITENG
+	{ 'S-sim/N-nao'															, .T. }, ; //X3_DESCRIC
+	{ 'S-sim/N-nao'															, .T. }, ; //X3_DESCSPA
+	{ 'S-sim/N-nao'															, .T. }, ; //X3_DESCENG
+	{ ''																	, .T. }, ; //X3_PICTURE
+	{ ''																	, .T. }, ; //X3_VALID
+	{ 'x       x       x       x       x       x       x       x       x       x       x       x       x       x       x x', .T. }, ; //X3_USADO
+	{ ''																	, .T. }, ; //X3_RELACAO
+	{ ''																	, .T. }, ; //X3_F3
+	{ 0																		, .T. }, ; //X3_NIVEL
+	{ 'xxxxxx x'															, .T. }, ; //X3_RESERV
+	{ ''																	, .T. }, ; //X3_CHECK
+	{ ''																	, .T. }, ; //X3_TRIGGER
+	{ 'U'																	, .T. }, ; //X3_PROPRI
+	{ 'N'																	, .T. }, ; //X3_BROWSE
+	{ 'A'																	, .T. }, ; //X3_VISUAL
+	{ 'R'																	, .T. }, ; //X3_CONTEXT
+	{ 'x'																	, .T. }, ; //X3_OBRIGAT
+	{ ''																	, .T. }, ; //X3_VLDUSER
+	{ 'S=Sim;N=Nao'															, .T. }, ; //X3_CBOX
+	{ 'S=Sim;N=Nao'															, .T. }, ; //X3_CBOXSPA
+	{ 'S=Sim;N=Nao'															, .T. }, ; //X3_CBOXENG
+	{ ''																	, .T. }, ; //X3_PICTVAR
+	{ ''																	, .T. }, ; //X3_WHEN
+	{ ''																	, .T. }, ; //X3_INIBRW
+	{ ''																	, .T. }, ; //X3_GRPSXG
+	{ '4'																	, .T. }, ; //X3_FOLDER
+	{ ''																	, .T. }, ; //X3_CONDSQL
+	{ ''																	, .T. }, ; //X3_CHKSQL
+	{ ''																	, .T. }, ; //X3_IDXSRV
+	{ 'N'																	, .T. }, ; //X3_ORTOGRA
+	{ ''																	, .T. }, ; //X3_TELA
+	{ ''																	, .T. }, ; //X3_POSLGT
+	{ 'N'																	, .T. }, ; //X3_IDXFLD
+	{ ''																	, .T. }, ; //X3_AGRUP
+	{ ''																	, .T. }, ; //X3_MODAL
+	{ ''																	, .T. }} ) //X3_PYME
+
+aAdd( aSX3, { ;
+	{ 'SF4'																	, .T. }, ; //X3_ARQUIVO
+	{ 'EJ'																	, .T. }, ; //X3_ORDEM
 	{ 'F4_XCODAJU'															, .T. }, ; //X3_CAMPO
 	{ 'C'																	, .T. }, ; //X3_TIPO
 	{ 8																		, .T. }, ; //X3_TAMANHO
@@ -497,7 +544,7 @@ aAdd( aSX3, { ;
 
 aAdd( aSX3, { ;
 	{ 'SF4'																	, .T. }, ; //X3_ARQUIVO
-	{ 'EJ'																	, .T. }, ; //X3_ORDEM
+	{ 'EK'																	, .T. }, ; //X3_ORDEM
 	{ 'F4_XCODREF'															, .T. }, ; //X3_CAMPO
 	{ 'C'																	, .T. }, ; //X3_TIPO
 	{ 7																		, .T. }, ; //X3_TAMANHO
@@ -544,14 +591,14 @@ aAdd( aSX3, { ;
 
 aAdd( aSX3, { ;
 	{ 'SF4'																	, .T. }, ; //X3_ARQUIVO
-	{ 'EK'																	, .T. }, ; //X3_ORDEM
+	{ 'EL'																	, .T. }, ; //X3_ORDEM
 	{ 'F4_XIFCOMP'															, .T. }, ; //X3_CAMPO
 	{ 'C'																	, .T. }, ; //X3_TIPO
 	{ 6																		, .T. }, ; //X3_TAMANHO
 	{ 0																		, .T. }, ; //X3_DECIMAL
-	{ 'OBS.LANC.FIS'														, .T. }, ; //X3_TITULO
-	{ 'OBS.LANC.FIS'														, .T. }, ; //X3_TITSPA
-	{ 'OBS.LANC.FIS'														, .T. }, ; //X3_TITENG
+	{ 'Obs.Lanc.Fis'														, .T. }, ; //X3_TITULO
+	{ 'Obs.Lanc.Fis'														, .T. }, ; //X3_TITSPA
+	{ 'Obs.Lanc.Fis'														, .T. }, ; //X3_TITENG
 	{ 'Cod. Observacao Doc Fisca'											, .T. }, ; //X3_DESCRIC
 	{ 'Cod. Observacao Doc Fisca'											, .T. }, ; //X3_DESCSPA
 	{ 'Cod. Observacao Doc Fisca'											, .T. }, ; //X3_DESCENG
@@ -765,7 +812,7 @@ Return NIL
 Função de processamento da gravação do SXA - Pastas
 
 @author TOTVS Protheus
-@since  28/08/2023
+@since  29/08/2023
 @obs    Gerado por EXPORDIC - V.7.3.1.1 EFS / Upd. V.5.2.1 EFS
 @version 1.0
 /*/
@@ -865,7 +912,7 @@ Return NIL
 Função de processamento da gravação do SXB - Consultas Padrao
 
 @author TOTVS Protheus
-@since  28/08/2023
+@since  29/08/2023
 @obs    Gerado por EXPORDIC - V.7.3.1.1 EFS / Upd. V.5.2.1 EFS
 @version 1.0
 /*/
@@ -1167,7 +1214,7 @@ Return NIL
 Função de processamento da gravação dos Helps de Campos
 
 @author TOTVS Protheus
-@since  28/08/2023
+@since  29/08/2023
 @obs    Gerado por EXPORDIC - V.7.3.1.1 EFS / Upd. V.5.2.1 EFS
 @version 1.0
 /*/
@@ -1213,6 +1260,14 @@ aAdd( aHlpPor, 'com seu conteúdo igual a ?SS?' )
 
 PutSX1Help( "PF4_IPIOBS ", aHlpPor, {}, {}, .T.,,.T. )
 AutoGrLog( "Atualizado o Help do campo " + "F4_IPIOBS" )
+
+aHlpPor := {}
+aAdd( aHlpPor, 'Possui ou não cBenef, sendo:' )
+aAdd( aHlpPor, 'S = Possui cBenef' )
+aAdd( aHlpPor, 'N = Não possui cBenef' )
+
+PutSX1Help( "PF4_XCBENEF", aHlpPor, {}, {}, .T.,,.T. )
+AutoGrLog( "Atualizado o Help do campo " + "F4_XCBENEF" )
 
 aHlpPor := {}
 aAdd( aHlpPor, 'Codigo de valores declaratórios tabela' )
@@ -1499,7 +1554,7 @@ Return NIL
 Função de processamento abertura do SM0 modo exclusivo
 
 @author TOTVS Protheus
-@since  28/08/2023
+@since  29/08/2023
 @obs    Gerado por EXPORDIC - V.7.3.1.1 EFS / Upd. V.5.2.1 EFS
 @version 1.0
 /*/
@@ -1542,7 +1597,7 @@ Return lOpen
 Função de leitura do LOG gerado com limitacao de string
 
 @author TOTVS Protheus
-@since  28/08/2023
+@since  29/08/2023
 @obs    Gerado por EXPORDIC - V.7.3.1.1 EFS / Upd. V.5.2.1 EFS
 @version 1.0
 /*/
