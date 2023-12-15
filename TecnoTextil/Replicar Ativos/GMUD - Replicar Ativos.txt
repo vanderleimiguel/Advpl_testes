@@ -1,0 +1,11 @@
+Passo-a-Passo para instalação do Replicar Ativos:
+==============================================================
+
+1. Compilar fontes: 
+	Replicar Ativos\Fontes\TECREPA1.prw  			- Função que replica ativo
+	Replicar Ativos\Compatibilizador\UPDTECT1.prw	- Compatibilizador
+
+2. Executar o compatibilizador :
+	Replicar Ativos\Compatibilizador\UPDTECT1.prw	- Compatibilizador
+
+.Fim
