@@ -12,19 +12,12 @@ Função que replica ativo
 @type function
 /*/
 User Function TECREPA1()
-	Local oSay1, oSay2, oSay3, oSay4
-	Local oTGet1
-	Local btnOut
-	Local btnGrv
 	Local cBase  	:= SN1->N1_CBASE
 	Local cItem     := SN1->N1_ITEM
 	Local cDescr    := SN1->N1_DESCRIC
 	Local nQuant    := SN1->N1_QUANTD
 	Local cReplic   := SN1->N1_XREPATV
-	Local nQDig     := 0
-	Local lValid    := .F.
 	Local cTpMov    := ""
-	Private oDlg1
 
 	//Fontes
 	Private cFontUti    := "Tahoma"
@@ -38,29 +31,52 @@ User Function TECREPA1()
 		cTpMov  := SN4->N4_OCORR
 	EndIf
 
-	//Verifica se possui movimentação
-	If cTpMov = "05" .AND. cReplic <> "X"
-
-		//Tela para digitar quantidade
-		DEFINE MsDialog oDlg1 TITLE "Replicar Ativos" STYLE DS_MODALFRAME FROM 0,0 TO 300,600 PIXEL
-
-		@ 10,10 SAY oSay1 PROMPT 'Replicar Ativos' SIZE 290,20 COLORS CLR_BLACK FONT oFontSubN OF oDlg1 PIXEL
-		@ 25,10 SAY oSay2 PROMPT 'Selecionado: Bem: ' + AllTrim(cBase) + ' - ' + AllTrim(cDescr)    SIZE 290,40 COLORS CLR_BLACK FONT oFontSub OF oDlg1 PIXEL
-		@ 40,70 SAY oSay3 PROMPT 'Item: ' + AllTrim(cItem) + ', Quantidade: ' + cValToChar(nQuant)  SIZE 290,40 COLORS CLR_BLACK FONT oFontSub OF oDlg1 PIXEL
-		@ 80,10 SAY oSay4 PROMPT 'Quantidade a replicar: ' SIZE 120,20 COLORS CLR_BLACK FONT oFontSub OF oDlg1 PIXEL
-
-		oTGet1:= TGet():New(80, 130,bSetGet( nQDig ), oDlg1, 20, 10,"@E 999",{||lValid := VldQtd(nQuant, nQDig),}, /*nClrFore*/, /*nClrBack*/, /*oFontPadrao*/, , , .T., /*uParam15*/, /*uParam16*/, /*bWhen*/, /*uParam18*/, /*uParam19*/, /*bChange*/, .F., /*lPassword*/, /*uParam23*/, /*cReadVar*/, /*uParam25*/, /*uParam26*/, /*uParam27*/, .F.)
-
-		@ 130,090 BUTTON btnGrv PROMPT "Replicar"   SIZE 100, 017 FONT oFontBtn ACTION IIf(lValid,ReplcMod(nQuant, nQDig),MSGSTOP( "Quantidade digitada nao é valida!", "Validacao Quantidade!" ))  OF oDlg1  PIXEL
-		@ 130,195 BUTTON btnOut PROMPT "Sair" 	    SIZE 100, 017 FONT oFontBtn ACTION (oDlg1:End()) OF oDlg1  PIXEL
-
-		ACTIVATE DIALOG oDlg1 CENTERED
-
-	ElseIf cTpMov <> "05"
+    //Verifica se possui movimentação
+	If cTpMov = "05
+        //verifica se ja foi replicado
+        If EMPTY( cReplic )
+            Replicar(cBase, cItem, cDescr, nQuant)
+        //Se ja foi replicado verifica quantidade    
+        ElseIf cReplic = "X" .AND. nQuant > 1
+            If MSGYESNO( "Ativo ja foi replicado, Deseja replicar novamente?", "Replicar" )
+                Replicar(cBase, cItem, cDescr, nQuant)
+            EndIf
+        Else
+		    MSGSTOP( "Ativo ja foi replicado e não poder ser replicado novamente!", "Bloqueio" )
+        EndIf
+    Else
 		MSGSTOP( "Ativo selecionado ja possui movimentacao e não pode ser replicado!", "Bloqueio" )
-	ElseIf cReplic = "X"
-		MSGSTOP( "Ativo ja foi replicado e não poder ser replicado novamente!", "Bloqueio" )
 	EndIf
+
+Return
+
+/*---------------------------------------------------------------------*
+ | Func:  Replicar                                                     |
+ | Desc:  Funcao para Mostra tela com Replicar                         |
+ *---------------------------------------------------------------------*/
+Static Function Replicar(_cBase, _cItem, _cDescr, _nQuant)
+	Local oSay1, oSay2, oSay3, oSay4
+	Local oTGet1
+	Local btnOut
+	Local btnGrv
+	Local nQDig     := 0
+	Local lValid    := .F.
+	Private oDlg1
+
+	//Tela para digitar quantidade
+	DEFINE MsDialog oDlg1 TITLE "Replicar Ativos" STYLE DS_MODALFRAME FROM 0,0 TO 300,600 PIXEL
+
+	@ 10,10 SAY oSay1 PROMPT 'Replicar Ativos' SIZE 290,20 COLORS CLR_BLACK FONT oFontSubN OF oDlg1 PIXEL
+	@ 25,10 SAY oSay2 PROMPT 'Selecionado: Bem: ' + AllTrim(_cBase) + ' - ' + AllTrim(_cDescr)    SIZE 290,40 COLORS CLR_BLACK FONT oFontSub OF oDlg1 PIXEL
+	@ 40,70 SAY oSay3 PROMPT 'Item: ' + AllTrim(_cItem) + ', Quantidade: ' + cValToChar(_nQuant)  SIZE 290,40 COLORS CLR_BLACK FONT oFontSub OF oDlg1 PIXEL
+	@ 80,10 SAY oSay4 PROMPT 'Quantidade a replicar: ' SIZE 120,20 COLORS CLR_BLACK FONT oFontSub OF oDlg1 PIXEL
+
+	oTGet1:= TGet():New(80, 130,bSetGet( nQDig ), oDlg1, 20, 10,"@E 999",{||lValid := VldQtd(_nQuant, nQDig),}, /*nClrFore*/, /*nClrBack*/, /*oFontPadrao*/, , , .T., /*uParam15*/, /*uParam16*/, /*bWhen*/, /*uParam18*/, /*uParam19*/, /*bChange*/, .F., /*lPassword*/, /*uParam23*/, /*cReadVar*/, /*uParam25*/, /*uParam26*/, /*uParam27*/, .F.)
+
+	@ 130,090 BUTTON btnGrv PROMPT "Replicar"   SIZE 100, 017 FONT oFontBtn ACTION IIf(lValid,ReplcMod(_nQuant, nQDig),MSGSTOP( "Quantidade digitada nao é valida!", "Validacao Quantidade!" ))  OF oDlg1  PIXEL
+	@ 130,195 BUTTON btnOut PROMPT "Sair" 	    SIZE 100, 017 FONT oFontBtn ACTION (oDlg1:End()) OF oDlg1  PIXEL
+
+	ACTIVATE DIALOG oDlg1 CENTERED
 
 Return
 
@@ -72,10 +88,11 @@ Static Function ReplcMod(_nQuant, _nQDig)
     Local nX
     Local aQtd      := {}
     Local nTamQtd   := 0
-	Local oSay1, oSay2, oSay3
+	Local oSay1, oSay2, oSay3, oSay4
 	Local btnOut
 	Local btnGrv
-    Local cTexto    := ""
+    Local cTexto1   := ""
+    Local cTexto2   := ""
 	Private oDlg2
 
     //Verifica Divisão
@@ -84,18 +101,23 @@ Static Function ReplcMod(_nQuant, _nQDig)
 
     If nTamQtd > 0
         For nX :=1 To nTamQtd
-           cTexto   +=  cValtoChar(aQtd[nX]) + IIf(nX = nTamQtd, "", ", ")
+            If nX < 15
+                cTexto1 +=  cValtoChar(aQtd[nX]) + IIf(nX = nTamQtd, "", ", ")
+            ElseIf nX >= 15
+                cTexto2  +=  cValtoChar(aQtd[nX]) + IIf(nX = nTamQtd, "", ", ")
+            EndIf
         Next nX
     
-	    //Tela para digitar quantidade
-	    DEFINE MsDialog oDlg2 TITLE "Distribuição" STYLE DS_MODALFRAME FROM 0,0 TO 200,600 PIXEL
+	    //Tela que mostra distrinuição
+	    DEFINE MsDialog oDlg2 TITLE "Distribuição" STYLE DS_MODALFRAME FROM 0,0 TO 200,700 PIXEL
 
 	    @ 10,10 SAY oSay1 PROMPT 'Distribuição do Replicar' SIZE 290,20 COLORS CLR_BLACK FONT oFontSubN OF oDlg2 PIXEL
 	    @ 25,10 SAY oSay2 PROMPT 'Quantidade de Ativos Adicionados: ' + cValtoChar(nTamQtd) SIZE 290,40 COLORS CLR_BLACK FONT oFontSub OF oDlg2 PIXEL
-        @ 40,10 SAY oSay3 PROMPT 'Distribuição de Quantidades: ' + cTexto                   SIZE 500,40 COLORS CLR_BLACK FONT oFontSub OF oDlg2 PIXEL
+        @ 40,10 SAY oSay3 PROMPT 'Distribuição de quantidades: ' + cTexto1                  SIZE 600,40 COLORS CLR_BLACK FONT oFontSub OF oDlg2 PIXEL
+        @ 55,50 SAY oSay4 PROMPT cTexto2                                                    SIZE 600,40 COLORS CLR_BLACK FONT oFontSub OF oDlg2 PIXEL
 
-	    @ 80,020 BUTTON btnGrv PROMPT "Confirmar"   SIZE 070, 017 FONT oFontBtn ACTION MsgRun("Replicando...", "Replicar Ativo", {||RepAtv(aQtd, nTamQtd, _nQDig, _nQuant)}) OF oDlg2  PIXEL
-	    @ 80,110 BUTTON btnOut PROMPT "Cancelar"    SIZE 070, 017 FONT oFontBtn ACTION (oDlg2:End()) OF oDlg2  PIXEL
+	    @ 80,050 BUTTON btnGrv PROMPT "Confirmar"   SIZE 070, 017 FONT oFontBtn ACTION MsgRun("Replicando...", "Replicar Ativo", {||RepAtv(aQtd, nTamQtd, _nQDig, _nQuant)}) OF oDlg2  PIXEL
+	    @ 80,250 BUTTON btnOut PROMPT "Cancelar"    SIZE 070, 017 FONT oFontBtn ACTION (oDlg2:End()) OF oDlg2  PIXEL
 
 	    ACTIVATE DIALOG oDlg2 CENTERED
 
@@ -235,7 +257,6 @@ Static Function RepAtv(_aQtd, _nTamQtd, _nQDig, _nQuant)
                 AAdd(aCab,{"N1_SDOC"    , SN1->N1_SDOC      ,NIL})         
                 AAdd(aCab,{"N1_XREPATV" , "X"               ,NIL})
 
-
                 //Busca dados da SN3
                 aItens := {}
                 If nX = 1
@@ -244,8 +265,6 @@ Static Function RepAtv(_aQtd, _nTamQtd, _nQDig, _nQuant)
                 (cAliasSN3)->(DbGoTop())
 	            While !(cAliasSN3)->(EOF())
         
-                // SN3->(DbSetOrder(1))
-                // If SN3->(DbSeek(FwxFilial("SN3") + cBase + cItem  ))
                     nVlrOri1    := Round((CALIASSN3)->N3_VORIG1 / _nQuant, 2)
                     nVlrOri2    := Round((CALIASSN3)->N3_VORIG2 / _nQuant, 2)
                     nVlrOri3    := Round((CALIASSN3)->N3_VORIG3 / _nQuant, 2)
@@ -253,11 +272,11 @@ Static Function RepAtv(_aQtd, _nTamQtd, _nQDig, _nQuant)
                     nVlrOri5    := Round((CALIASSN3)->N3_VORIG5 / _nQuant, 2)
         
                     AAdd(aItens,{;
-                    {"N3_CBASE"   , cBaseNov            ,NIL},;
-                    {"N3_ITEM"    , cItemNov            ,NIL},;
+                    {"N3_CBASE"   , cBaseNov                    ,NIL},;
+                    {"N3_ITEM"    , cItemNov                    ,NIL},;
                     {"N3_TIPO"    , (CALIASSN3)->N3_TIPO        ,NIL},;
                     {"N3_TIPREAV" , (CALIASSN3)->N3_TIPREAV     ,NIL},;
-                    {"N3_BAIXA"   , "0"                 ,NIL},;
+                    {"N3_BAIXA"   , "0"                         ,NIL},;
                     {"N3_HISTOR"  , (CALIASSN3)->N3_HISTOR      ,NIL},;
                     {"N3_TPSALDO" , (CALIASSN3)->N3_TPSALDO     ,NIL},;
                     {"N3_TPDEPR"  , (CALIASSN3)->N3_TPDEPR      ,NIL},;
@@ -268,15 +287,15 @@ Static Function RepAtv(_aQtd, _nTamQtd, _nQDig, _nQuant)
                     {"N3_CCDEPR"  , (CALIASSN3)->N3_CCDEPR      ,NIL},;
                     {"N3_CDESP"   , (CALIASSN3)->N3_CDESP       ,NIL},;
                     {"N3_CCORREC" , (CALIASSN3)->N3_CCORREC     ,NIL},;
-                    {"N3_VORIG1"  , _aQtd[nX] * nVlrOri1 ,NIL},;
+                    {"N3_VORIG1"  , _aQtd[nX] * nVlrOri1        ,NIL},;
                     {"N3_TXDEPR1" , (CALIASSN3)->N3_TXDEPR1     ,NIL},;
-                    {"N3_VORIG2"  , _aQtd[nX] * nVlrOri2 ,NIL},;
+                    {"N3_VORIG2"  , _aQtd[nX] * nVlrOri2        ,NIL},;
                     {"N3_TXDEPR2" , (CALIASSN3)->N3_TXDEPR2     ,NIL},;
-                    {"N3_VORIG3"  , _aQtd[nX] * nVlrOri3 ,NIL},;
+                    {"N3_VORIG3"  , _aQtd[nX] * nVlrOri3        ,NIL},;
                     {"N3_TXDEPR3" , (CALIASSN3)->N3_TXDEPR3     ,NIL},;
-                    {"N3_VORIG4"  , _aQtd[nX] * nVlrOri4 ,NIL},;
+                    {"N3_VORIG4"  , _aQtd[nX] * nVlrOri4        ,NIL},;
                     {"N3_TXDEPR4" , (CALIASSN3)->N3_TXDEPR4     ,NIL},;
-                    {"N3_VORIG5"  , _aQtd[nX] * nVlrOri5 ,NIL},;
+                    {"N3_VORIG5"  , _aQtd[nX] * nVlrOri5        ,NIL},;
                     {"N3_TXDEPR5" , (CALIASSN3)->N3_TXDEPR5     ,NIL},;                  
                     {"N3_VRCBAL1" , (CALIASSN3)->N3_VRCBAL1     ,NIL},;
                     {"N3_VRDBAL1" , (CALIASSN3)->N3_VRCBAL1     ,NIL},;
@@ -358,11 +377,8 @@ Static Function RepAtv(_aQtd, _nTamQtd, _nQDig, _nQuant)
                     {"N3_ATFCPR"  , (CALIASSN3)->N3_ATFCPR      ,NIL},;
                     {"N3_INTP"    , (CALIASSN3)->N3_INTP        ,NIL};
                         })
-                        // {"N3_DTACELE" , (CALIASSN3)->N3_DTACELE     ,NIL},;
-                        //{"N3_DEXAUST" , (CALIASSN3)->N3_DEXAUST     ,NIL},;
 
-                //EndIf
-                		(cAliasSN3)->(DbSkip())
+                	(cAliasSN3)->(DbSkip())
 	            EndDo
                 
                 //Controle de transacao
@@ -385,13 +401,16 @@ Static Function RepAtv(_aQtd, _nTamQtd, _nQDig, _nQuant)
                 End Transaction
             EndIf
 
-            cItemNov    := SOMA1(cItemNov)
+            If nX < _nTamQtd
+                cItemNov    := SOMA1(cItemNov)
+            EndIf
 
         Next nX
         
         //Execauto de exclusão
         If !lErro
             ExecExcl(cBase, cItem)
+            ExecAlte(cBase, cItem, cItemNov)
 
             MSGINFO( "Ativos Replicados com Sucesso!", "Replicar Ativos" ) 
         EndIf
@@ -432,17 +451,59 @@ Static Function ExecExcl(_cBase, _cItem)
     EndIf
 
     Begin Transaction
-
         MSExecAuto({|x,y,z| Atfa012(x,y,z)},aCab,Nil,5,aParam)
 
         If lMsErroAuto
-
             MostraErro()
             DisarmTransaction()
-
         Endif
-
     End Transaction
+
+    RestArea(aArea)
+Return
+
+/*---------------------------------------------------------------------*
+ | Func:  ExecAlte                                                     |
+ | Desc:  Funcao para execauto Alteração SN1                            |
+ *---------------------------------------------------------------------*/
+Static Function ExecAlte(_cBase, _cItem, _cItemNov)
+    Local aArea     := GetArea()
+
+    SN1->(DbSetOrder(1)) //N1_FILIAL+N1_CBASE+N1_ITEM
+    If SN1->(DbSeek(xFilial("SN1")+ _cBase + _cItemNov)) 
+        RecLock( "SN1", .F.)
+            SN1->N1_ITEM    := _cItem
+            SN1->N1_CHAPA   := _cBase + _cItem
+        SN1->(MsUnlock())
+        SN3->(DbSetOrder(1))
+        SN3->(DbGoTop())
+        If SN3->(DbSeek(xFilial("SN3")+ _cBase))
+            WHILE xFilial("SN3")+ _cBase = SN3->(N3_FILIAL + N3_CBASE)
+                If SN3->(DbSeek(xFilial("SN3")+ _cBase + _cItemNov))
+            	    RecLock( "SN3", .F.)
+                        SN3->N3_ITEM    := _cItem
+                    SN3->(MsUnlock())
+                Else
+                    Exit
+                EndIf
+                SN3->(DbSkip())
+		    EndDo
+            SN4->(DbSetOrder(1))
+            SN4->(DbGoTop())
+            If SN4->(DbSeek(xFilial("SN4")+ _cBase))
+                WHILE xFilial("SN4")+ _cBase = SN4->(N4_FILIAL + N4_CBASE)
+                    If SN4->(DbSeek(xFilial("SN4")+ _cBase + _cItemNov))
+            	    RecLock( "SN4", .F.)
+                        SN4->N4_ITEM    := _cItem
+                    SN4->(MsUnlock())
+                    Else
+                        Exit
+                    EndIf
+                    SN4->(DbSkip())
+		        EndDo
+            EndIf    
+        EndIf
+    EndIf
 
     RestArea(aArea)
 Return
