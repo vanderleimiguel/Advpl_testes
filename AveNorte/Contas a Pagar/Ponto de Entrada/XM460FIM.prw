@@ -7,7 +7,7 @@ Ponto de entrada para gravar dados após a gravação da nota fiscal
 @version 1.0
 @type function
 /*/
-User Function M460FIM()
+User Function XM460FIM()
 	Local aArea     	:= GetArea()
 	Local cCliente		:= SF2->F2_CLIENTE
 	Local cNFiscal		:= SF2->F2_DOC
@@ -35,19 +35,19 @@ User Function M460FIM()
 				cForCod 	:= SA2->A2_COD
 				cForLoja	:= SA2->A2_LOJA
 				cForNome    := SA2->A2_NREDUZ
+
+				//Grava Contas a Pagar
+				GravSE2(cFil, cNFiscal, cSerie, cEmissao, nTotAFC, cForCod, cPrefixo, cForLoja, cForNome)
+
+				//Grava Flag de confirmação de geração do contas a pagar
+				SE2->(DbSetOrder(6))
+				If SE2->(DbSeek( cFil + cForCod + cForLoja + cPrefixo + cNFiscal ))//FORNECEDOR E LOJA
+					DbSelectArea("SF2")
+					RecLock("SF2", .F.)
+					SF2->F2_XFLGAFC	:=  "AFC" + cNFiscal
+					SF2->(MsUnLock())
+				EndIf
 			EndIf
-		EndIf
-
-		//Grava Contas a Pagar
-		GravSE2(cFil, cNFiscal, cSerie, cEmissao, nTotAFC, cForCod, cPrefixo, cForLoja, cForNome)
-
-		//Grava Flag de confirmação de geração do contas a pagar
-		SE2->(DbSetOrder(6))
-		If SE2->(DbSeek( cFil + cForCod + cForLoja + cPrefixo + cNFiscal ))//FORNECEDOR E LOJA
-			DbSelectArea("SF2")
-			RecLock("SF2", .F.)
-			SF2->F2_XFLGAFC	:=  "AFC" + cNFiscal
-			SF2->(MsUnLock())
 		EndIf
 	EndIf
 

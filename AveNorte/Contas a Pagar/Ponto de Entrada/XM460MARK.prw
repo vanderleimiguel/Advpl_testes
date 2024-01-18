@@ -7,7 +7,7 @@ Ponto de entrada para Validação de pedidos marcados
 @version 1.0
 @type function
 /*/
-User Function M460MARK()
+User Function XM460MARK()
 	Local aArea 	    := GetArea()
 	Local lRet          := .T.
 	Local cCliente		:= SC9->C9_CLIENTE
